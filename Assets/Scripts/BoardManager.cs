@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System;
 using Random = UnityEngine.Random;
 using UnityEngine;
+using Unity.VisualScripting;
 
-public class BoardManager : MonoBehaviour
+public class BoardManager : MonoBehaviour 
 {
 
     [Serializable]
@@ -59,10 +60,11 @@ public class BoardManager : MonoBehaviour
             {
                 GameObject toInstantiate = floorTiles[Random.Range(0, floorTiles.Length)];
                 if (x == -1 || x == columns || y == -1 || y == rows)
+                {
                     toInstantiate = outerWallTiles[Random.Range(0, outerWallTiles.Length)];
+                }
 
                 GameObject instance = Instantiate(toInstantiate, new Vector3(x, y, 0f), Quaternion.identity) as GameObject;
-
                 instance.transform.SetParent(boardHolder);
             }
         }
@@ -79,7 +81,13 @@ public class BoardManager : MonoBehaviour
     }
 
     void LayoutObjectAtRandom(GameObject[] tileArray, int minimum, int maximum)
-    { 
+    {
+        //Count counter = new Count(minimum, maximum);
+
+        // counter = new Count(); 
+
+        
+
         int objectCount = Random.Range(minimum, maximum+1);
 
         for (int i = 0; i < objectCount; i++) {
@@ -87,6 +95,24 @@ public class BoardManager : MonoBehaviour
             Vector3 randomPosition = RandomPosition();
             GameObject tileChoice = tileArray[Random.Range(0,tileArray.Length)];
             Instantiate(tileChoice, randomPosition, Quaternion.identity);
+
+        }
+
+    }
+
+    void LayoutObjectAtRandom(GameObject[] tileArray, Count counter)
+    {
+        
+
+        int objectCount = Random.Range(counter.minimum, counter.maximum + 1);
+
+        for (int i = 0; i < objectCount; i++)
+        {
+
+            Vector3 randomPosition = RandomPosition();
+            GameObject tileChoice = tileArray[Random.Range(0, tileArray.Length)];
+            Instantiate(tileChoice, randomPosition, Quaternion.identity);
+
         }
 
     }
@@ -95,12 +121,15 @@ public class BoardManager : MonoBehaviour
     {
         BoardSetup();
         InitialiseList();
-        LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum);
-        LayoutObjectAtRandom(foodTiles, foodCount.minimum, foodCount.maximum);
+
+        //LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum);
+        //LayoutObjectAtRandom(foodTiles, foodCount.minimum, foodCount.maximum);
+
+        LayoutObjectAtRandom(wallTiles, wallCount);
+        LayoutObjectAtRandom(foodTiles, foodCount);
         int enemyCount = (int)Mathf.Log(level, 2f);
         LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount);
         Instantiate(exit, new Vector3(columns - 1, rows -1, 0F), Quaternion.identity);
-
 
     }
 

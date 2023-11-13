@@ -6,7 +6,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
 
-    public BoardManager boardScript;
+    //public BoardManager boardScript;
+    public BoardManagerMarco boardScriptMarco;
 
     private int level = 3;
 
@@ -14,19 +15,25 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         if (instance == null)
+        {
             instance = this;
+        }
         else if (instance != this)
+        {
             Destroy(gameObject);
+        }
 
         DontDestroyOnLoad(gameObject);
-        boardScript = GetComponent<BoardManager>();
+        //boardScript = GetComponent<BoardManager>();
+        boardScriptMarco = GetComponent<BoardManagerMarco>();
         InitGame();
     }
 
 
     void InitGame() 
     {
-        boardScript.SetupScene(level);
+        //boardScript.SetupScene(level);
+        boardScriptMarco.SetupScene(level);
     }
 
 
